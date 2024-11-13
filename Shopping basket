@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Shopping Basket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .basket {
+            width: 300px;
+            height: 200px;
+            border: 2px dashed #000;
+            margin-top: 20px;
+            background: url('shopping_basket.png') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+        }
+        .item {
+            margin: 5px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #e6ffe6;
+            cursor: grab;
+        }
+        .item.dropped {
+            background-color: #d1ffd1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Available Fruits and Vegetables</h3>
+        <div id="items">
+            <div class="item" draggable="true" aria-label="Onion">Onion</div>
+            <div class="item" draggable="true" aria-label="Corn">Corn</div>
+            <div class="item" draggable="true" aria-label="Kiwi Fruit">Kiwi Fruit</div>
+            <div class="item" draggable="true" aria-label="Orange">Orange</div>
+            <div class="item" draggable="true" aria-label="Pineapple">Pineapple</div>
+            <div class="item" draggable="true" aria-label="Banana">Banana</div>
+            <div class="item" draggable="true" aria-label="Cabbage">Cabbage</div>
+            <div class="item" draggable="true" aria-label="Mushroom">Mushroom</div>
+            <div class="item" draggable="true" aria-label="Strawberry">Strawberry</div>
+            <div class="item" draggable="true" aria-label="Potato">Potato</div>
+            <div class="item" draggable="true" aria-label="Cucumber">Cucumber</div>
+            <div class="item" draggable="true" aria-label="Apple">Apple</div>
+            <div class="item" draggable="true" aria-label="Peach">Peach</div>
+            <div class="item" draggable="true" aria-label="Melon">Melon</div>
+            <div class="item" draggable="true" aria-label="Carrot">Carrot</div>
+            <div class="item" draggable="true" aria-label="Tomato">Tomato</div>
+            <div class="item" draggable="true" aria-label="Cherry">Cherry</div>
+            <div class="item" draggable="true" aria-label="Green Pepper">Green Pepper</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h3>Shopping Basket</h3>
+        <div id="basket" class="basket" aria-label="Basket"></div>
+    </div>
+
+    <script>
+        const items = document.querySelectorAll('.item');
+        const basket = document.getElementById('basket');
+
+        items.forEach(item => {
+            item.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text', e.target.innerText);
+            });
+        });
+
+        basket.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+
+        basket.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const data = e.dataTransfer.getData('text');
+
+            // Check if the item is already in the basket
+            if (![...basket.children].some(child => child.textContent === data)) {
+                const newItem = document.createElement('div');
+                newItem.className = 'item dropped';
+                newItem.textContent = data;
+                basket.appendChild(newItem);
+            } else {
+                alert(`${data} is already in the basket!`);
+            }
+        });
+    </script>
+</body>
+</html>
